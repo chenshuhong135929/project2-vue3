@@ -107,11 +107,13 @@ reactive定义的响应式数据是”深层次的“
 ### Vue3.0的响应式
     实现原理
         通过Proxy(代理)：拦截对象中任意属性的变化，包括：属性值的读写，属性的添加，属性的删除等
-        通过Refiect(反射) ：对代理对象属性进行操作
+        通过Refiect(反射) ：对源对象属性进行操作
         MDN文档中描述Proxy 与 Refiect :
         - Proxy：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy
         - Reflect：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect
-  let person = {
+    
+    
+    let person = {
      id:'111',
      name:'nihao'
    }
@@ -134,3 +136,16 @@ reactive定义的响应式数据是”深层次的“
       })
       console.log('p==========',p);
       person.name = 'tom'  
+
+
+## reactive 对比 ref 
+- 从定义数据角度对比
+    ref用来定义：基本类型数据
+    reactive用来定义：对象（或数组）类型数据
+    备注：ref也可以用来定义对象（或数组） 类型数据，它内部会自动通过reactive转为代理对象
+- 从原理角度对比
+    -  ref通过``Object.defineProperty()``的```get```与```set```来实现响应式（数据劫持）。
+    -  reactive通过使用<strong style="color:#DD5145">Proxy</strong>来实现响应式（数据劫持）, 并通过<strong style="color:#DD5145">Reflect</strong>操作<strong style="color:orange">源对象</strong>内部的数据。
+-  从使用角度对比：
+   -  ref定义的数据：操作数据<strong style="color:#DD5145">需要</strong>```.value```，读取数据时模板中直接读取<strong style="color:#DD5145">不需要</strong>```.value```。
+   -  reactive定义的数据：操作数据与读取数据：<strong style="color:#DD5145">均不需要</strong>```.value```。
