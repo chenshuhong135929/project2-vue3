@@ -1,76 +1,82 @@
 <template>
-  <h2>一人的信息</h2>
-  <h2>姓名：{{name}}</h2>
-  <h2>年龄：{{age}}</h2>
-  <h2>薪资:{{job.salary}}</h2>
-  <h2>类型：{{job.type}}</h2>
-  <h2 v-show="job.sex">性别：{{job.sex}}</h2>
-  <h2 v-show="job.name">姓名：{{job.name}}</h2>
-  <h2>深层次:{{job.a.b.c}},数组 {{arrs[0]}}</h2>
+  <div class="app" >
+    <!--
+    <Demo_1></Demo_1> 
+    <Demo_2  msg="nihao" school="学校" @hello="helloMsg">
+      <template v-slot:nihao>
+        <span>我是卡槽</span>
+      </template>
+    </Demo_2>
+    <Demo_3></Demo_3>
+    <Demo_4 ></Demo_4>
+    <Demo_5 ></Demo_5>
+    <Demo_6 ></Demo_6>
+    <Demo_7 ></Demo_7>
+    <h3>我是App组件（祖）{{name}} ---- {{price}}</h3>
+    <Child></Child>
+     -->
+   
+  </div>
   
-  <h2>爱好： <b v-for="ar in arrs" :key="ar.index">{{ar}}，</b></h2>
-  <button @click="updateInfo">修改人信息</button>
-  <button @click="addSex">添加一个sex属性</button>
-  <button @click="deleteName">删除一个name属性</button>
 </template>
 
 <script>
  
- import {ref , reactive} from  'vue'
  
 
+import Demo_1 from './components/Demo_1.vue'
+import Demo_2 from './components/Demo_2.vue'
+import Demo_3 from './components/Demo_3.vue'
+import Demo_4 from './components/Demo_4.vue'
+import Demo_5 from './components/Demo_5.vue'
+import Demo_6 from './components/Demo_6.vue'
+import Demo_7 from './components/Demo_7.vue'
+import Child from './components/Child.vue'
+import {provide,reactive, toRefs,isRef,isProxy, computed} from 'vue'
 export default {
   name: 'App',
+  components:{
+     Demo_1,
+     Demo_2,
+     Demo_3,
+     Demo_4,
+     Demo_5,
+     Demo_6,
+     Demo_7,
+     Child,
+  
+  },
   setup(){
-    let name = ref('zhangsang')
-    let age  =  ref(11)
-    let arrs = reactive(['学习','打球','吃饭'])
-    //操作对象属性
-    let job = reactive({
-      salary:'30k',
-      type:'前端工程师',
-      name:'小米',
-      a:{
-        b:{
-          c:'666'
-        }
-      }
+     
+    function helloMsg(name){
+      alert('你好啊！！！'+ name)
+    }
 
+     
+    //祖，孙组件传递数据
+    let car = reactive({
+      name:'奔驰',
+      price: '40w'
     })
- 
-    function updateInfo(){
-       name.value='张三'
-       age.value=29
-       job.salary='40k'
-       job.type='工程师'
-       arrs[0]='玩游戏'
-    }
+    provide('car',car)
 
-    function addSex(){
-        job.sex='男'
-    }
 
-    function deleteName(){
-        delete job.name 
-    }
-   
 
-     return{
-      name,
-      age,
-      updateInfo,
-      job,
-      arrs,
-      addSex,
-      deleteName
-    } 
-    //返回一个函数（渲染函数）
-    //reture ()=> h('h1','你好'),
+    //判断
+    console.log(isRef(car));
+    console.log(isProxy(car));
+    return{
+      helloMsg,
+     ...toRefs(car)
+    }
   }
 }
  
 </script>
 
 <style>
- 
+/*  .app{
+    background-color: gray;
+    padding: 10px;
+} */
 </style>
